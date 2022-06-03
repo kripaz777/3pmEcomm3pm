@@ -73,7 +73,7 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 		<div class="container">
 			
 			<div class="logo">
-				<h1 ><a href="index.html"><b>T<br>H<br>E</b>Big Store<span>The Best Supermarket</span></a></h1>
+				<h1 ><a href="/"><b>T<br>H<br>E</b>Big Store<span>The Best Supermarket</span></a></h1>
 			</div>
 			<div class="head-t">
 				<ul class="card">
@@ -110,7 +110,7 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 					</div> 
 					<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
 						<ul class="nav navbar-nav ">
-							<li class=" active"><a href="index.html" class="hyper "><span>Home</span></a></li>	
+							<li class=" active"><a href="/" class="hyper "><span>Home</span></a></li>	
 							{% for cat in categories %}
 							<li class="dropdown ">
 								<a href="#" class="dropdown-toggle  hyper" data-toggle="dropdown" ><span>{{cat.name}}<b class="caret"></b></span></a>
@@ -121,7 +121,7 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 											<ul class="multi-column-dropdown">
 											{% for subcat in subcategories %}
 											{% if subcat.category_id == cat.id %}
-												<li><a href="kitchen.html"><i class="fa fa-angle-right" aria-hidden="true"></i>{{subcat.name}}</a></li>
+												<li><a href="/subcat/{{subcat.slug}}"><i class="fa fa-angle-right" aria-hidden="true"></i>{{subcat.name}}</a></li>
 											{% endif %}
 
 												{% endfor %}												

@@ -12,14 +12,15 @@
 </div>
 		<div class="single">
 			<div class="container">
-						<div class="single-top-main">
+{% for detail in detail_product %}
+<div class="single-top-main">
 	   		<div class="col-md-5 single-top">
 	   		<div class="single-w3agile">
 							
 <div id="picture-frame">
-			<img src="images/si.jpg" data-src="images/si-1.jpg" alt="" class="img-responsive"/>
+			<img src="{{detail.image.url}}" data-src="{{detail.image.url}}" alt="" class="img-responsive"/>
 		</div>
-										<script src="js/jquery.zoomtoo.js"></script>
+										<script src="{% static 'js/jquery.zoomtoo.js' %}"></script>
 								<script>
 			$(function() {
 				$("#picture-frame").zoomToo({
@@ -34,16 +35,22 @@
 			</div>
 			<div class="col-md-7 single-top-left ">
 								<div class="single-right">
-				<h3>Wheat</h3>
+				<h3>{{detail.name}}</h3>
 				
 					
 				 <div class="pr-single">
-				  <p class="reduced "><del>$10.00</del>$5.00</p>
+
+				 	{% if detail.discounted_price > 0 %}
+									<p ><label>${{detail.price}}</label><em class="item_price">${{detail.discounted_price}}</em></p>
+									{% else %}
+									<p ><em class="item_price">${{detail.price}}</em></p>
+
+									{% endif %}
 				</div>
 				<div class="block block-w3">
 					<div class="starbox small ghosting"> </div>
 				</div>
-				<p class="in-pa"> There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. </p>
+				<p class="in-pa"> {{detail.description}} </p>
 			   	
 				<ul class="social-top">
 					<li><a href="#" class="icon facebook"><i class="fa fa-facebook" aria-hidden="true"></i><span></span></a></li>
@@ -63,8 +70,11 @@
 
 			</div>
 		   <div class="clearfix"> </div>
-	   </div>	
-				 
+</div>	
+		
+{% endfor %}
+
+
 				
 	</div>
 </div>
