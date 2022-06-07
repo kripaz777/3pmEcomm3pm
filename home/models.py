@@ -10,7 +10,7 @@ from django.db import models
 
 class Category(models.Model):
 	name = models.CharField(max_length = 300)
-	slug = models.TextField()
+	slug = models.TextField(unique = True)
 	status = models.CharField(max_length = 50,blank = True,choices = (('active','Active'),('','Default')))
 
 
@@ -21,7 +21,7 @@ class Category(models.Model):
 class SubCategory(models.Model):
 	name = models.CharField(max_length = 300)
 	category = models.ForeignKey(Category,on_delete = models.CASCADE,default =1)
-	slug = models.TextField()
+	slug = models.TextField(unique = True)
 
 	def __str__(self):
 		return self.name
@@ -56,7 +56,7 @@ class Product(models.Model):
 	description = models.TextField(blank = True)
 	status = models.CharField(max_length = 50,choices = (('active','Active'),('','Default')))
 	labels = models.CharField(max_length = 500,choices = LABELS,blank = True)
-	slug = models.TextField()
+	slug = models.TextField(unique = True)
 
 
 	def __str__(self):
