@@ -102,3 +102,46 @@ def login(request):
 def logout(request):
 	auth.logout(request)
 	return redirect('/')
+
+def cal_cart(slug,username):
+	if Cart.objects.filter(username = username,slug = slug,checkout = False).exists():
+		quantity = Cart.objects.get(username = username,slug = slug,checkout = False).quantity
+	else:
+		quantity = 1
+	price = Product.objects.get(slug = slug).price
+	discounted_price = Product.objects.get(slug = slug).discounted_price
+	if discounted_price >0:
+		original_price = discounted_price
+
+	else:
+		original_price = price
+
+	return original_price,quantity
+
+def cart(request,slug):
+	username = request.user.username
+	if Cart.objects.filter(username = username,slug = slug,checkout = False).exists():
+		original_price,quantity = cal_cart(slug,username)
+		quantity = quantity+1
+		total = original_price*quantity
+		Cart.objects.filter(username = username,slug = slug,checkout = False).update(quantity = quantity,total = total)
+		return redirect('/')
+		
+	else:
+		username = request.user.username
+		original_price,quantity = cal_cart(slug,username)
+		data = Cart.objects.create(
+			username = username,
+			slug = slug,
+			items = Product.objects.filter(slug = slug)[0],
+			total = original_price
+			)
+		data.save()
+		return redirect('/')
+
+
+class CartView(BaseView):
+	def get(self,request):
+		username = request.user.username
+		self.views['cart_product'] = Cart.objects.filter(username = username,checkout = False)
+		return render(request,'wishlist.html',self.views)

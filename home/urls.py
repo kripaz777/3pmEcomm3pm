@@ -11,6 +11,10 @@ urlpatterns = [
 	path('register/',signup,name = 'register'),
 	path('login/',login,name = 'login'),
 	path('logout/',logout,name = 'logout'),
+	path('cart/<slug>',cart,name = 'cart'),
+	path('my_cart/',CartView.as_view(),name = 'my_cart'),
+
+
 
 
 
