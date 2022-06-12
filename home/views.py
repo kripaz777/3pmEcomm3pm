@@ -125,7 +125,7 @@ def cart(request,slug):
 		quantity = quantity+1
 		total = original_price*quantity
 		Cart.objects.filter(username = username,slug = slug,checkout = False).update(quantity = quantity,total = total)
-		return redirect('/')
+		return redirect('/my_cart/')
 		
 	else:
 		username = request.user.username
@@ -137,11 +137,37 @@ def cart(request,slug):
 			total = original_price
 			)
 		data.save()
-		return redirect('/')
+		return redirect('/my_cart/')
 
+def delete_cart(request,slug):
+	username = request.user.username
+	if Cart.objects.filter(username = username,slug = slug,checkout = False).exists():
+		Cart.objects.filter(username = username,slug = slug,checkout = False).delete()
+		return redirect('/my_cart/')
+
+
+def reduce_cart(request,slug):
+	username = request.user.username
+	if Cart.objects.filter(username = username,slug = slug,checkout = False).exists():
+		original_price,quantity = cal_cart(slug,username)
+		quantity = quantity-1
+		total = original_price*quantity
+		Cart.objects.filter(username = username,slug = slug,checkout = False).update(quantity = quantity,total = total)
+		return redirect('/my_cart/')
 
 class CartView(BaseView):
 	def get(self,request):
 		username = request.user.username
 		self.views['cart_product'] = Cart.objects.filter(username = username,checkout = False)
 		return render(request,'wishlist.html',self.views)
+
+
+
+# ----------------------------------------API--------------------------------------------
+from rest_framework import serializers, viewsets
+from .serializers import *
+
+# ViewSets define the view behavior.
+class ItemViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ItemSerializer
